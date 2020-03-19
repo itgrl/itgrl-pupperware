@@ -9,7 +9,7 @@ class pupperware::dockercompose (
 ){
   include docker::compose
 
-  docker_compose { "PuppetPlatform":
+  docker_compose { 'PuppetPlatform':
     ensure        => present,
     compose_files => [ $compose_file ],
   }

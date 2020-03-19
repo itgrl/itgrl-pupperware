@@ -24,7 +24,8 @@
 #
 # @param puppetdb_postgres_hostname
 #
-# The DNS name of the Postgres host to use when performing initial health checks and when connecting to the database. Defaults to 'postgres'.
+# The DNS name of the Postgres host to use when performing initial health checks and when
+# connecting to the database. Defaults to 'postgres'.
 #
 # @param puppetdb_postPUPPETDB_POSTGRES_PORT
 #
@@ -44,7 +45,8 @@
 #
 # @param puppetdb_node_ttl
 #
-# How long nodes should be preserved in puppetdb without receiving any updates (new catalogs, facts, or reports) before being marked expired. Defaults to '7d'.
+# How long nodes should be preserved in puppetdb without receiving any updates (new catalogs, facts, or reports) before
+# being marked expired. Defaults to '7d'.
 #
 # @param puppetdb_node_purge_ttl
 #
@@ -84,60 +86,61 @@
 #
 # @param puppetdb_dns_alt_names
 #
-# Subject Alternative Names to be included on the SSL certificate. Defaults to empty string. Note the Puppet CA must be configured to allow Subject Alternative Names, by default it rejects them.
+# Subject Alternative Names to be included on the SSL certificate. Defaults to empty string. Note the Puppet CA must
+# be configured to allow Subject Alternative Names, by default it rejects them.
 #
 ## @example
 #   include pupperware
 class pupperware (
   $dns_servers,
-  Enum ['run', 'compose'] $docker_type,
-  $docker_compose_file = '/tmp/docker-compose.yml',
-  $compose_file_owner = 'root',
-  $compose_file_group = 'root',
-  $compose_file_mode  = '0644',
-  $compose_file_version => '3.7'
-  $pupperware_analytics_enabled,
-  $puppetserver_java_args,
-  $puppet_masterport = '8140',
-  $puppetserver_max_active_instances,
-  $puppetserver_max_requests_per_instance,
-  $ca_enabled,
-  $ca_hostname,
-  $ca_masterport,
-  $ca_allow_subject_alt_names,
-  $puppetserver_consul_enabled,
-  $puppetserver_consul_hostname,
-  $puppetserver_consul_port,
-  $puppetserver_network_interface,
-  $puppet_reports,
-  $puppet_storeconfigs,
-  $puppet_storeconfigs_backend,
-  $puppetdb_server_urls,
-  $puppetserver_hostname,
-  $puppetserver_port
-  $autosign,
-  $dns_alt_names,
-  $use_puppetdb,
-  $use_puppetserver,
-  $puppetdb_postgres_hostname,
-  $puppetdb_postgres_port,
-  $puppetdb_user,
-  $puppetdb_password,
-  $puppetdb_node_ttl,
-  $puppetdb_node_purge_ttl,
-  $puppetdb_report_ttl,
-  $puppetdb_java_args,
-  $puppetdb_consul_enabled,
-  $puppetdb_consul_hostname,
-  $puppetdb_consul_port,
-  $puppetdb_network_interface,
-  $postgres_password,
-  $postgres_user,
-  $postgres_db,
-  $postgres_initdb_args,
-  $postgres_initdb_waldir,
-  $postgres_host_auth_method,
-  $pgdata,
+  Enum['run', 'compose'] $docker_type,
+  Boolean                $pupperware_analytics_enabled,
+  String                 $puppetserver_java_args,
+  Integer                $puppetserver_max_active_instances,
+  Integer                $puppetserver_max_requests_per_instance,
+  Boolean                $ca_enabled,
+  String                 $ca_hostname,
+  String                 $ca_masterport,
+  Boolean                $ca_allow_subject_alt_names,
+  Boolean                $puppetserver_consul_enabled,
+  String                 $puppetserver_consul_hostname,
+  String                 $puppetserver_consul_port,
+  String                 $puppetserver_network_interface,
+  Boolean                $puppet_reports,
+  Boolean                $puppet_storeconfigs,
+  Boolean                $puppet_storeconfigs_backend,
+  Array[String]          $puppetdb_server_urls,
+  String                 $puppetserver_hostname,
+  String                 $puppetserver_port,
+  Boolean                $autosign,
+  String                 $dns_alt_names,
+  Boolean                $use_puppetdb,
+  Boolean                $use_puppetserver,
+  String                 $puppetdb_postgres_hostname,
+  String                 $puppetdb_postgres_port,
+  String                 $puppetdb_user,
+  String                 $puppetdb_password,
+  String                 $puppetdb_node_ttl,
+  String                 $puppetdb_node_purge_ttl,
+  String                 $puppetdb_report_ttl,
+  String                 $puppetdb_java_args,
+  String                 $puppetdb_consul_enabled,
+  String                 $puppetdb_consul_hostname,
+  String                 $puppetdb_consul_port,
+  String                 $puppetdb_network_interface,
+  String                 $postgres_password,
+  String                 $postgres_user,
+  String                 $postgres_db,
+  String                 $postgres_initdb_args,
+  String                 $postgres_initdb_waldir,
+  String                 $postgres_host_auth_method,
+  String                 $pgdata,
+  String                 $puppet_masterport = '8140',
+  String                 $docker_compose_file = '/tmp/docker-compose.yml',
+  String                 $compose_file_owner = 'root',
+  String                 $compose_file_group = 'root',
+  String                 $compose_file_mode  = '0644',
+  String                 $compose_file_version = '3.7',
 ){
   # Create the concat of the Docker Compose file, if $docker_type = compose
   if $docker_type == 'compose' {
@@ -147,8 +150,8 @@ class pupperware (
       mode  => $compose_file_mode,
     }
 
-    concat::fragment { "$docker_compose_file header": 
-      order => '01',
+    concat::fragment { "${docker_compose_file} header":
+      order   => '01',
       content => "version: '${compose_file_version}'\n\nservices:\n",
     }
 
