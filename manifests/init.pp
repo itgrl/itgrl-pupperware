@@ -24,13 +24,11 @@
 #
 # @param puppetdb_postgres_hostname
 #
-# The DNS name of the Postgres host to use when performing initial health checks and when 
-# connecting to the database. Defaults to 'postgres'.
+# The DNS name of the Postgres host to use when performing initial health checks and when connecting to the database. Defaults to 'postgres'.
 #
 # @param puppetdb_postPUPPETDB_POSTGRES_PORT
 #
-# The port of the Postgres host to use when performing initial health checks and when connecting 
-# to the database. Defaults to '5432'.
+# The port of the Postgres host to use when performing initial health checks and when connecting to the database. Defaults to '5432'.
 #
 # @param puppetdb_postgres_database
 #
@@ -46,8 +44,7 @@
 #
 # @param puppetdb_node_ttl
 #
-# How long nodes should be preserved in puppetdb without receiving any updates (new catalogs, facts,i
-# or reports) before being marked expired. Defaults to '7d'.
+# How long nodes should be preserved in puppetdb without receiving any updates (new catalogs, facts, or reports) before being marked expired. Defaults to '7d'.
 #
 # @param puppetdb_node_purge_ttl
 #
@@ -87,21 +84,21 @@
 #
 # @param puppetdb_dns_alt_names
 #
-# Subject Alternative Names to be included on the SSL certificate. Defaults to empty string. Note the Puppet CA must be 
-# configured to allow Subject Alternative Names, by default it rejects them.
+# Subject Alternative Names to be included on the SSL certificate. Defaults to empty string. Note the Puppet CA must be configured to allow Subject Alternative Names, by default it rejects them.
 #
 ## @example
 #   include pupperware
 class pupperware (
+  $dns_servers,
+  Enum ['run', 'compose'] $docker_type,
   $docker_compose_file = '/tmp/docker-compose.yml',
   $compose_file_owner = 'root',
   $compose_file_group = 'root',
   $compose_file_mode  = '0644',
-  $compose_file_version = '3.7',
-  $puppet_masterport = '8140',
-  Enum['run', 'compose'] $docker_type = 'compose',
+  $compose_file_version => '3.7'
   $pupperware_analytics_enabled,
   $puppetserver_java_args,
+  $puppet_masterport = '8140',
   $puppetserver_max_active_instances,
   $puppetserver_max_requests_per_instance,
   $ca_enabled,
@@ -117,7 +114,7 @@ class pupperware (
   $puppet_storeconfigs_backend,
   $puppetdb_server_urls,
   $puppetserver_hostname,
-  $puppetserver_port,
+  $puppetserver_port
   $autosign,
   $dns_alt_names,
   $use_puppetdb,
@@ -141,7 +138,6 @@ class pupperware (
   $postgres_initdb_waldir,
   $postgres_host_auth_method,
   $pgdata,
-  $dns_servers,
 ){
   # Create the concat of the Docker Compose file, if $docker_type = compose
   if $docker_type == 'compose' {
@@ -151,8 +147,8 @@ class pupperware (
       mode  => $compose_file_mode,
     }
 
-    concat::fragment { "${docker_compose_file} header":
-      order   => '01',
+    concat::fragment { "$docker_compose_file header": 
+      order => '01',
       content => "version: '${compose_file_version}'\n\nservices:\n",
     }
 
